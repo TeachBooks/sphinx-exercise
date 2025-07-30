@@ -102,10 +102,9 @@ class ResolveTitlesInExercises(SphinxPostTransform):
             if len(title.children) > 1:
                 subtitle = title.children[1]
                 if isinstance(subtitle, exercise_subtitle):
-                    updated_title += docutil_nodes.Text(" (")
+                    updated_title += docutil_nodes.Text(": ")
                     for child in subtitle.children:
                         updated_title += child
-                    updated_title += docutil_nodes.Text(")")
             updated_title.parent = title.parent
             node.children[0] = updated_title
         node.resolved_title = True
@@ -152,7 +151,7 @@ def resolve_solution_title(app, node, exercise_node):
         if len(exercise_title.children) > 1:
             subtitle = exercise_title.children[1]
             if isinstance(subtitle, exercise_subtitle):
-                wrap_reference += docutil_nodes.Text(" (")
+                wrap_reference += docutil_nodes.Text(": ")
                 for child in subtitle.children:
                     if isinstance(child, docutil_nodes.math):
                         # Ensure mathjax is loaded for pages that only contain
@@ -160,7 +159,6 @@ def resolve_solution_title(app, node, exercise_node):
                         domain = app.env.get_domain("math")
                         domain.data["has_equations"][app.env.docname] = True
                     wrap_reference += child
-                wrap_reference += docutil_nodes.Text(")")
         updated_title += docutil_nodes.Text(entry_title_text)
         updated_title += wrap_reference
         updated_title.parent = title.parent
